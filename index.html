@@ -187,7 +187,7 @@
 
             <!-- Section 3: Interactive Simulators -->
             <section id="interactive-simulators">
-                <h2 class="text-3xl font-bold text-center mb-10"><span class="section-header">Tahap 3: Simulator Performa Interaktif</span></h2>
+                <h2 class="text-3xl font-bold text-center mb-10"><span class="section-header">Tahap 3: Kalkulator & Simulator Interaktif</span></h2>
                 <div class="metric-card mb-8">
                     <label for="system-selector" class="block text-lg font-bold mb-2 text-center">Pilih Konfigurasi Sistem:</label>
                     <select id="system-selector" class="w-full max-w-md mx-auto block p-3 border border-slate-300 rounded-lg text-lg focus:ring-2 focus:ring-blue-500">
@@ -197,9 +197,36 @@
                     </select>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="space-y-8">
+                    <!-- Pedaling Energy Calculator -->
+                     <div class="metric-card">
+                        <h3 class="text-xl font-bold mb-4 text-center">🚲 Kalkulator Energi Kayuhan</h3>
+                        <p class="text-slate-600 mb-6 text-center">Masukkan berapa lama Anda mengayuh untuk melihat energi yang dihasilkan dan perbandingannya antar sistem.</p>
+                        <div class="max-w-md mx-auto">
+                            <label for="pedaling-time-input" class="block mb-2 font-medium text-slate-700">Lama Mengayuh (Menit)</label>
+                            <input type="number" id="pedaling-time-input" value="10" min="1" class="w-full p-2 border border-slate-300 rounded-lg">
+                        </div>
+                        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                            <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                <h4 class="font-bold text-red-800">Sistem Awal</h4>
+                                <p class="text-2xl font-bold text-red-900 mt-2"><span id="pedal-initial-runtime">...</span></p>
+                                <p class="text-sm text-red-700">Waktu Operasi</p>
+                            </div>
+                            <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                <h4 class="font-bold text-yellow-800">Opsi 1 (PMDC)</h4>
+                                <p class="text-2xl font-bold text-yellow-900 mt-2"><span id="pedal-option1-runtime">...</span></p>
+                                <p class="text-sm text-yellow-700">Waktu Operasi</p>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                <h4 class="font-bold text-green-800">Opsi 2 (BLDC)</h4>
+                                <p class="text-2xl font-bold text-green-900 mt-2"><span id="pedal-option2-runtime">...</span></p>
+                                <p class="text-sm text-green-700">Waktu Operasi</p>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <!-- Main Simulator -->
-                    <div class="metric-card lg:col-span-2">
+                    <div class="metric-card">
                         <h3 class="text-xl font-bold mb-4 text-center">🔋⚡ Simulator Aki & Pengisian Daya</h3>
                         <p class="text-slate-600 mb-6 text-center">Geser slider untuk melihat bagaimana level aki mempengaruhi waktu operasi dan kebutuhan charging.</p>
                         
@@ -220,20 +247,24 @@
                                 <p class="text-3xl font-bold text-slate-800"><span id="charge-to-full-value">...</span></p>
                             </div>
                         </div>
-                         <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-center">
-                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                                <p class="text-sm font-medium text-blue-800">Waktu Charge Penuh (0-100%)</p>
-                                <p class="text-xl font-bold text-blue-900"><span id="full-charge-time-value">...</span></p>
-                            </div>
-                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                                <p class="text-sm font-medium text-blue-800">Waktu Charge untuk 1 Jam Pakai</p>
-                                <p class="text-xl font-bold text-blue-900"><span id="charge-per-use-value">...</span></p>
-                            </div>
+                    </div>
+
+                     <!-- Usage Time Calculator -->
+                    <div class="metric-card">
+                        <h3 class="text-xl font-bold mb-4 text-center">⏳ Kalkulator Waktu Charging</h3>
+                        <p class="text-slate-600 mb-6 text-center">Masukkan berapa lama Anda ingin menggunakan sistem untuk melihat waktu charging yang diperlukan.</p>
+                        <div class="max-w-md mx-auto">
+                           <label for="usage-time-input" class="block mb-2 font-medium text-slate-700">Waktu Pemakaian yang Diinginkan (Jam)</label>
+                           <input type="number" id="usage-time-input" value="1" min="0.1" step="0.1" class="w-full p-2 border border-slate-300 rounded-lg">
+                        </div>
+                        <div class="mt-6 text-center bg-blue-50 p-4 rounded-lg border border-blue-200">
+                           <p class="text-sm font-medium text-blue-800">Waktu Charging yang Dibutuhkan</p>
+                           <p class="text-3xl font-bold text-blue-900 mt-2"><span id="usage-charge-time">...</span></p>
                         </div>
                     </div>
                     
                     <!-- Water Needs Calculator -->
-                    <div class="metric-card lg:col-span-2">
+                    <div class="metric-card">
                         <h3 class="text-xl font-bold mb-4 text-center">💧 Kalkulator Keperluan Air</h3>
                         <p class="text-slate-600 mb-6 text-center">Masukkan kebutuhan air untuk menghitung waktu produksi dan konsumsi daya aki.</p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -407,8 +438,15 @@
             const runtimeValueEl = document.getElementById('runtime-value');
             const capacityValueEl = document.getElementById('capacity-value');
             const chargeToFullValueEl = document.getElementById('charge-to-full-value');
-            const fullChargeTimeValueEl = document.getElementById('full-charge-time-value');
-            const chargePerUseValueEl = document.getElementById('charge-per-use-value');
+            
+            const usageTimeInput = document.getElementById('usage-time-input');
+            const usageChargeTimeEl = document.getElementById('usage-charge-time');
+            
+            const pedalingTimeInput = document.getElementById('pedaling-time-input');
+            const pedalInitialRuntimeEl = document.getElementById('pedal-initial-runtime');
+            const pedalOption1RuntimeEl = document.getElementById('pedal-option1-runtime');
+            const pedalOption2RuntimeEl = document.getElementById('pedal-option2-runtime');
+
             const ufWaterInput = document.getElementById('uf-water-input');
             const roWaterInput = document.getElementById('ro-water-input');
             const waterProdTimeEl = document.getElementById('water-prod-time');
@@ -439,16 +477,24 @@
                 const runtimeHours = availableWh / system.powerOut;
                 runtimeValueEl.textContent = formatTime(runtimeHours);
                 
-                // Update Charging Time Simulator (Integrated)
                 const neededWh = system.batteryWh - availableWh;
                 const chargeToFullHours = neededWh / system.powerIn;
                 chargeToFullValueEl.textContent = formatTime(chargeToFullHours);
                 
-                const fullChargeHours = system.batteryWh / system.powerIn;
-                fullChargeTimeValueEl.textContent = formatTime(fullChargeHours);
-                
-                const chargePerUseHours = system.powerOut / system.powerIn;
-                chargePerUseValueEl.textContent = formatTime(chargePerUseHours);
+                // Update Usage Time Calculator
+                const usageHours = parseFloat(usageTimeInput.value) || 0;
+                const requiredChargeHours = usageHours * (system.powerOut / system.powerIn);
+                usageChargeTimeEl.textContent = formatTime(requiredChargeHours);
+
+                // Update Pedaling Calculator
+                const pedalingMinutes = parseFloat(pedalingTimeInput.value) || 0;
+                Object.keys(systems).forEach(key => {
+                    const currentSys = systems[key];
+                    const energyGeneratedWh = (pedalingMinutes / 60) * currentSys.powerIn;
+                    const runtimeGeneratedHours = energyGeneratedWh / currentSys.powerOut;
+                    const runtimeGeneratedFormatted = formatTime(runtimeGeneratedHours);
+                    document.getElementById(`pedal-${key}-runtime`).textContent = runtimeGeneratedFormatted;
+                });
 
                 // Update Water Needs Calculator
                 const ufLiters = parseFloat(ufWaterInput.value) || 0;
@@ -465,6 +511,8 @@
 
             systemSelector.addEventListener('change', updateAllSimulators);
             batterySlider.addEventListener('input', updateAllSimulators);
+            usageTimeInput.addEventListener('input', updateAllSimulators);
+            pedalingTimeInput.addEventListener('input', updateAllSimulators);
             ufWaterInput.addEventListener('input', updateAllSimulators);
             roWaterInput.addEventListener('input', updateAllSimulators);
             
